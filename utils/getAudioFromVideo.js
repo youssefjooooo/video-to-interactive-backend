@@ -1,5 +1,7 @@
 import { exec } from "child_process";
 import fs from "fs/promises";
+import { platform } from "os";
+
 function runCommand(command) {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
@@ -14,8 +16,11 @@ function runCommand(command) {
 }
 
 async function getAudioFromVideo(audioPath, videoUrl) {
+  const isWindows = platform() === "win32";
+  const ytDlpPath = isWindows ? "public/bin/yt-dlp.exe" : "public/bin/yt-dlp";
+  const ffmpegLocation = "public/bin";
   await runCommand(
-    `"bin/yt-dlp" -f bestaudio --extract-audio --audio-format mp3 --audio-quality 5 --ffmpeg-location "bin" -o "${audioPath}" "${videoUrl}"`
+    `"${ytDlpPath}" -f bestaudio --extract-audio --audio-format mp3 --audio-quality 5 --ffmpeg-location "${ffmpegLocation}" -o "${audioPath}" "${videoUrl}"`
   );
 
   try {
