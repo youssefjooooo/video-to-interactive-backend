@@ -15,7 +15,7 @@ function runCommand(command) {
 
 async function getAudioFromVideo(audioPath, videoUrl) {
   await runCommand(
-    `"bin\\yt-dlp.exe" -f bestaudio --extract-audio --audio-format mp3 --audio-quality 5 --ffmpeg-location "bin" -o "${audioPath}" "${videoUrl}"`
+    `"bin/yt-dlp" -f bestaudio --extract-audio --audio-format mp3 --audio-quality 5 --ffmpeg-location "bin" -o "${audioPath}" "${videoUrl}"`
   );
 
   try {
