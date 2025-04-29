@@ -47,19 +47,19 @@ export default async function processVideo(req, res) {
     let transcription = await getYoutubeTranscript(videoUrl);
     console.log("Transcript aquired successfully");
 
-    let aiResponse;
-    try {
-      aiResponse = await generateResponse(transcription);
-    } catch (error) {
-      console.error("Error generating AI response:", error);
-      return res.status(500).json({
-        error: "Failed to generate AI response",
-        details: error.message,
-      });
-    }
+    // let aiResponse;
+    // try {
+    //   aiResponse = await generateResponse(transcription);
+    // } catch (error) {
+    //   console.error("Error generating AI response:", error);
+    //   return res.status(500).json({
+    //     error: "Failed to generate AI response",
+    //     details: error.message,
+    //   });
+    // }
 
-    const result = aiResponse;
-    // const result = "bla bla bla";
+    // const result = aiResponse;
+    const result = "bla bla bla";
 
     // try {
     //   await fs.unlink(audioPath);
