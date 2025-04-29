@@ -55,7 +55,7 @@ async function transcribeAudio(audioPath) {
 
   while (!transcriptionResult || transcriptionResult.status !== "completed") {
     console.log("Checking transcription status...");
-    await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait 5 seconds before checking
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     const statusRes = await axios.get(
       `https://api.assemblyai.com/v2/transcript/${transcriptionId}`,
       {

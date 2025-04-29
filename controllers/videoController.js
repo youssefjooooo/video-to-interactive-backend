@@ -4,6 +4,8 @@ import fs from "fs/promises";
 import generateResponse from "../utils/generateResponse.js";
 import transcribeAudio from "../utils/transcripeAudio.js";
 import getAudioFromVideo from "../utils/getAudioFromVideo.js";
+import YoutubeTranscript from "../utils/getYoutubeTranscript.js";
+import getYoutubeTranscript from "../utils/getYoutubeTranscript.js";
 
 export default async function processVideo(req, res) {
   try {
@@ -12,34 +14,38 @@ export default async function processVideo(req, res) {
       return res.status(400).json({ error: "No video URL provided" });
     }
 
-    const audioDir = "/tmp";
-    await fs.mkdir(audioDir, { recursive: true });
-    const audioPath = path.join(audioDir, "audio.mp3");
+    // const audioDir = "/tmp";
+    // await fs.mkdir(audioDir, { recursive: true });
+    // const audioPath = path.join(audioDir, "audio.mp3");
 
-    console.log(`Downloading audio from URL: ${videoUrl}`);
-    console.log(`Audio will be saved to: ${audioPath}`);
+    // console.log(`Downloading audio from URL: ${videoUrl}`);
+    // console.log(`Audio will be saved to: ${audioPath}`);
 
-    try {
-      await getAudioFromVideo(audioPath, videoUrl);
-    } catch (error) {
-      console.error("Error downloading audio:", error);
-      return res
-        .status(500)
-        .json({ error: "Failed to download audio", details: error.message });
-    }
+    // try {
+    //   await getAudioFromVideo(audioPath, videoUrl);
+    // } catch (error) {
+    //   console.error("Error downloading audio:", error);
+    //   return res
+    //     .status(500)
+    //     .json({ error: "Failed to download audio", details: error.message });
+    // }
 
-    console.log("Audio download complete. Transcribing audio...");
-    console.log(`Transcribing audio from: ${audioPath}`);
+    // console.log("Audio download complete. Transcribing audio...");
+    // console.log(`Transcribing audio from: ${audioPath}`);
 
-    let transcription;
-    try {
-      transcription = await transcribeAudio(audioPath);
-    } catch (error) {
-      console.error("Error transcribing audio:", error);
-      return res
-        .status(500)
-        .json({ error: "Failed to transcribe audio", details: error.message });
-    }
+    // let transcription;
+    // try {
+    //   transcription = await transcribeAudio(audioPath);
+    // } catch (error) {
+    //   console.error("Error transcribing audio:", error);
+    //   return res
+    //     .status(500)
+    //     .json({ error: "Failed to transcribe audio", details: error.message });
+    // }
+
+    console.log("Getting transcript from YouTube....");
+    let transcription = await getYoutubeTranscript(videoUrl);
+    console.log("Transcript aquired successfully");
 
     let aiResponse;
     try {
@@ -53,13 +59,14 @@ export default async function processVideo(req, res) {
     }
 
     const result = aiResponse;
+    // const result = "bla bla bla";
 
-    try {
-      await fs.unlink(audioPath);
-      console.log(`Audio file deleted: ${audioPath}`);
-    } catch (error) {
-      console.error("Error deleting audio file:", error);
-    }
+    // try {
+    //   await fs.unlink(audioPath);
+    //   console.log(`Audio file deleted: ${audioPath}`);
+    // } catch (error) {
+    //   console.error("Error deleting audio file:", error);
+    // }
 
     console.log(
       "============================================================================="
@@ -67,7 +74,7 @@ export default async function processVideo(req, res) {
 
     return res.status(200).json({
       status: "Success",
-      transcription: transcription.text,
+      transcription: transcription,
       data: result,
     });
   } catch (error) {

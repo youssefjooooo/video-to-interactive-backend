@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({
-  apiKey: "AIzaSyBvkx2dIGjm6Ma8D5SLn12rNeY1aPjKEUc",
+  apiKey: "AIzaSyA5Mg0qzOXcFHRXjuE3v6ZXWPcJ5NYb4_M",
 });
 
 async function generateResponse(transcription) {
@@ -9,9 +9,11 @@ async function generateResponse(transcription) {
 
   const prompt = `Here's a coding tutorial video transcript: ${transcription}. Generate the following:
 
-  1. 5 multiple-choice questions based on the transcript with the correct answers.
+  1. 20 multiple-choice questions based on the transcript with the correct answers.
   2. A coding challenge matching the level of what's in the transcript.
   3. A concise summary of the video.
+
+  NOTE: score for each question should vary according to the difficulty level of the question, and they should be a total of 100 at the end.
 
   Please **return ONLY the following in strict JSON format**, no additional explanation or extra text. The JSON response should look like this:
 
